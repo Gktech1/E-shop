@@ -2,6 +2,7 @@
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
+using System.Text.Json;
 using System.Xml.Linq;
 
 namespace Basket.API.Controllers
@@ -11,10 +12,14 @@ namespace Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
+        //private readonly DiscountGrpcService _discountGrpcService;
+        private readonly ILogger<BasketController> _logger;
 
-        public BasketController(IBasketRepository repository)
+        public BasketController(IBasketRepository repository, ILogger<BasketController> logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
+           // _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
+            _logger = logger;
         }
 
         [HttpGet("{userName}", Name = "GetBasket")] 
@@ -29,7 +34,22 @@ namespace Basket.API.Controllers
         [ProducesResponseType(typeof(ShoppingCart), (int)HttpStatusCode.OK)]
         public async Task<ActionResult<ShoppingCart>> UpdateBasket([FromBody] ShoppingCart basket)
         {
+            //_logger.LogInformation($"Inside Update Basket :{UpdateBasket}");
+            Console.WriteLine($"Inside Update Basket Request: {JsonSerializer.Serialize(basket)}");
+            // TODO : Communicate with Discount.Grpc
+            // and Calculate latest prices of product into shopping cart
+            // consume Discount Grpc
+/*            foreach (var item in basket.Items)
+            {
+                var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
+                //_logger.LogInformation(JsonSerializer.Serialize(coupon));
+                Console.WriteLine($"Coupon Reponse : {JsonSerializer.Serialize(coupon)}");
+                item.Price -= coupon.Amount;
+            }*/
             return Ok(await _repository.UpdateBasket(basket));
+            //_logger.LogInformation(JsonSerializer.Serialize(basket));
+            Console.WriteLine($"Basket Reponse : {JsonSerializer.Serialize(basket)}");
+
         }
 
         [HttpDelete("{userName}", Name = "DeleteBasket")]

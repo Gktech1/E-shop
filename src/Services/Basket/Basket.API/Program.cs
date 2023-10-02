@@ -1,6 +1,8 @@
+
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
+using System.Runtime;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,6 +11,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 // General Configuration
 builder.Services.AddScoped<IBasketRepository, BasketRepository>();
+
+
+// Grpc Configuration
+/*builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
+    (o => o.Address = new Uri(builder.Configuration.GetSection("GrpcSettings")["DiscountUrl"])); 
+builder.Services.AddScoped<DiscountGrpcService>();*/
+//builder.Services.AddScoped<ILogger>();
 
 // Redis Configuration
 builder.Services.AddStackExchangeRedisCache(options =>
