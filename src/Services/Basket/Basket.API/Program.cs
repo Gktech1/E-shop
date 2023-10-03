@@ -1,5 +1,7 @@
 
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
+using Discount.Grpc.Protos;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using System.Runtime;
@@ -14,9 +16,9 @@ builder.Services.AddScoped<IBasketRepository, BasketRepository>();
 
 
 // Grpc Configuration
-/*builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
-    (o => o.Address = new Uri(builder.Configuration.GetSection("GrpcSettings")["DiscountUrl"])); 
-builder.Services.AddScoped<DiscountGrpcService>();*/
+builder.Services.AddGrpcClient<DiscountProtoService.DiscountProtoServiceClient>
+    (o => o.Address = new Uri(builder.Configuration["GrpcSettings:DiscountUrl"]));
+builder.Services.AddScoped<DiscountGrpcService>();
 //builder.Services.AddScoped<ILogger>();
 
 // Redis Configuration

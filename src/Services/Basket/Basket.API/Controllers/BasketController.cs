@@ -1,4 +1,5 @@
 ﻿using Basket.API.Entities;
+using Basket.API.GrpcServices;
 using Basket.API.Repositories;
 using Microsoft.AspNetCore.Mvc;
 using System.Net;
@@ -12,13 +13,13 @@ namespace Basket.API.Controllers
     public class BasketController : ControllerBase
     {
         private readonly IBasketRepository _repository;
-        //private readonly DiscountGrpcService _discountGrpcService;
+        private readonly DiscountGrpcService _discountGrpcService;
         private readonly ILogger<BasketController> _logger;
 
-        public BasketController(IBasketRepository repository, ILogger<BasketController> logger)
+        public BasketController(IBasketRepository repository, DiscountGrpcService discountGrpcService, ILogger<BasketController> logger)
         {
             _repository = repository ?? throw new ArgumentNullException(nameof(repository));
-           // _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
+            _discountGrpcService = discountGrpcService ?? throw new ArgumentNullException(nameof(discountGrpcService));
             _logger = logger;
         }
 
@@ -39,13 +40,13 @@ namespace Basket.API.Controllers
             // TODO : Communicate with Discount.Grpc
             // and Calculate latest prices of product into shopping cart
             // consume Discount Grpc
-/*            foreach (var item in basket.Items)
+            foreach (var item in basket.Items)
             {
                 var coupon = await _discountGrpcService.GetDiscount(item.ProductName);
                 //_logger.LogInformation(JsonSerializer.Serialize(coupon));
                 Console.WriteLine($"Coupon Reponse : {JsonSerializer.Serialize(coupon)}");
                 item.Price -= coupon.Amount;
-            }*/
+            }
             return Ok(await _repository.UpdateBasket(basket));
             //_logger.LogInformation(JsonSerializer.Serialize(basket));
             Console.WriteLine($"Basket Reponse : {JsonSerializer.Serialize(basket)}");
