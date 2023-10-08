@@ -29,7 +29,7 @@ namespace Ordering.API.Controllers
         }
 
         // testing purpose
-        [HttpPost(Name = "CheckoutOrder")]
+        [HttpPost("CheckoutOrder", Name = "CheckoutOrder")]
         [ProducesResponseType((int)HttpStatusCode.OK)]
         public async Task<ActionResult<int>> CheckoutOrder([FromBody] CheckoutOrderCommand command)
         {
@@ -37,7 +37,7 @@ namespace Ordering.API.Controllers
             return Ok(result);
         }
 
-        [HttpPut(Name = "UpdateOrder")]
+        [HttpPut("UpdateOrder", Name = "UpdateOrder")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status404NotFound)]
         [ProducesDefaultResponseType]
