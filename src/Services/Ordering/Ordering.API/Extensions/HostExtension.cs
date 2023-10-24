@@ -16,13 +16,18 @@ namespace Ordering.API.Extensions
                 var services = scope.ServiceProvider;
                 var logger = services.GetRequiredService<ILogger<TContext>>();
                 var context = services.GetService<TContext>();
-
+                var db = scope.ServiceProvider.GetRequiredService<TContext>().Database;
+                while (!db.CanConnect())
+                {
+                    logger.LogInformation("Database not ready yet; waiting.....");
+                    Thread.Sleep(10000);
+                }
                 try
                 {
                   
                         logger.LogInformation("Migrating database associated with context {DbContextName}", typeof(TContext).Name);
 
-                        //InvokeSeeder(seeder, context, services);
+                        InvokeSeeder(seeder, context, services);
 
                         logger.LogInformation("Migrated database associated with context {DbContextName}", typeof(TContext).Name);
                    
