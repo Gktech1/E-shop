@@ -1,5 +1,7 @@
 using EventBus.Messages.Common;
+using Mailjet.Client;
 using MassTransit;
+using Microsoft.Extensions.Configuration;
 using Ordering.API.EventBusConsumer;
 using Ordering.API.Extensions;
 using Ordering.Application;
@@ -14,7 +16,6 @@ builder.Services.AddApplicationServices();
 builder.Services.AddInfrastructureServices(builder.Configuration);
 builder.Services.AddAutoMapper(typeof(Program));
 builder.Services.AddScoped<BasketCheckoutConsumer>();
-
 // MassTransit-RabbitMQ Configuration
 builder.Services.AddMassTransit(config => {
 

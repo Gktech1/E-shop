@@ -9,6 +9,8 @@ namespace Ordering.Application.Contracts.Infrastructure
 {
     public interface IEmailService
     {
-        Task<bool> SendEmail(Email email);
+        // Task<bool> SendEmail(Email email);
+        Task<bool> SendEmailAsync(EmailRequest mailRequest);
+        string GetEmailTemplate(string templateName);
     }
 }

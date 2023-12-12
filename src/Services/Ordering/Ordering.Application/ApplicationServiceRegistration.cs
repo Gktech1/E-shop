@@ -1,4 +1,5 @@
 ﻿using FluentValidation;
+using Mailjet.Client;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Ordering.Application.Behaviours;
@@ -16,6 +17,7 @@ namespace Ordering.Application
 
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(UnhandledExceptionBehaviour<,>));
             services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehaviour<,>));
+            
 
             return services;
         }
